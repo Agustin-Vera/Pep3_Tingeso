@@ -1,6 +1,16 @@
 import { useState } from "react";
 import creditApplicationService from "../services/creditApplicationService";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import CreditConditionsView from "./CreditConditionsView";
 
 const SimulateCredit = () => {
   const [type, setType] = useState("");
@@ -38,22 +48,56 @@ const SimulateCredit = () => {
   return (
     <>
       <h1>Simulación de Crédito</h1>
-      <div>
-        <label>Ingrese el monto a solicitar:</label>
-        <input
-          type="text"
-          value={amount}
+      <Box
+        component="form"
+        sx={{ "& > :not(style)": { m: 1, width: "50%" } }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="filled-basic"
+          label="Monto a Solicitar"
+          variant="filled"
+          sx={{
+            bgcolor: "#fff",
+            p: 1.5,
+            borderRadius: 2,
+          }}
           onChange={(e) => setAmount(e.target.value)}
         />
-      </div>
-      <div>
-        <label>Ingrese el plazo a pagar (en años):</label>
-        <input
-          type="text"
-          value={term}
+        <TextField
+          id="filled-basic"
+          label="Plazo para pagar (años)"
+          variant="filled"
+          sx={{
+            bgcolor: "#fff",
+            p: 1.5,
+            borderRadius: 2,
+          }}
           onChange={(e) => setTerm(e.target.value)}
         />
-      </div>
+      </Box>
+
+      <br />
+      <Box sx={{ bgcolor: "#fff", p: 1.5, borderRadius: 2 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            //value={age}
+            label="Age"
+            onChange={(e) => {
+              handleCreditType(e.target.value);
+            }}
+          >
+            <MenuItem value={1}>Primera Vivienda</MenuItem>
+            <MenuItem value={2}>Segunda Vivienda</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
       <br />
       <div>
         <label>Tipo de Crédito:</label>
@@ -71,6 +115,8 @@ const SimulateCredit = () => {
         </select>
       </div>
       <br />
+      <CreditConditionsView id={type} />
+
       {type && (
         <>
           <p>Tasa de Interés (anual): {interestRate}%</p>
@@ -82,6 +128,7 @@ const SimulateCredit = () => {
         </>
       )}
 
+      <Button variant="contained">Contained</Button>
       <div className="col-12">
         <button
           type="submit"

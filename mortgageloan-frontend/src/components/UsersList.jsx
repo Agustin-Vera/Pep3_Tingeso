@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -29,6 +30,13 @@ const UsersList = () => {
   return (
     <div>
       <h1>Lista Usuarios</h1>
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ marginBottom: "1rem" }} // Espaciado debajo del botón
+      >
+        Agregar Nuevo Usuario
+      </Button>
       <div className="table-responsive">
         <table className="table">
           <thead className="table-dark">
