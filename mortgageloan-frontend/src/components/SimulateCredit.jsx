@@ -2,6 +2,7 @@ import { useState } from "react";
 import creditApplicationService from "../services/creditApplicationService";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
 import {
+  Alert,
   Box,
   Button,
   FormControl,
@@ -11,15 +12,15 @@ import {
   TextField,
 } from "@mui/material";
 import CreditConditionsView from "./CreditConditionsView";
+import SendIcon from "@mui/icons-material/Send";
+import { useNavigate } from "react-router-dom";
 
 const SimulateCredit = () => {
+  const navigate = useNavigate();
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [term, setTerm] = useState("");
   const [monthlyInstallment, setMonthlyInstallment] = useState("");
-  const [maxTerm, setMaxTerm] = useState("");
-  const [interestRate, setInterestRate] = useState("");
-  const [maximumFinancing, setMaximumFinancing] = useState("");
 
   const simulateCreditApplication = (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ const SimulateCredit = () => {
       .simulate(amount, term, type)
       .then((response) => {
         console.log("Simulación de Crédito:", response.data);
-        setMonthlyInstallment(response.data);
+        setMonthlyInstallment(Number(response.data).toLocaleString("es-CL"));
       })
       .catch((error) => {
         console.log("Error al simular la solicitud de crédito", error);
@@ -35,121 +36,98 @@ const SimulateCredit = () => {
       });
   };
 
-  const handleCreditType = (e) => {
-    setType(e);
-    mortgageLoanCondition.get(e).then((response) => {
-      console.log("Condiciones de Crédito:", response.data);
-      setMaxTerm(response.data.maximumTerm);
-      setInterestRate(response.data.interestRate);
-      setMaximumFinancing(response.data.maximumFinancingAmount);
-    });
-  };
-
   return (
     <>
       <h1>Simulación de Crédito</h1>
+      <p>Complete los campos a continuación</p>
       <Box
         component="form"
-        sx={{ "& > :not(style)": { m: 1, width: "50%" } }}
+        sx={{
+          "& > :not(style)": {
+            m: 1,
+            width: "50%",
+            bgcolor: "#fff",
+            p: 1.5,
+            borderRadius: 2,
+          },
+        }}
         noValidate
         autoComplete="off"
       >
         <TextField
+          value={amount}
           id="filled-basic"
           label="Monto a Solicitar"
           variant="filled"
-          sx={{
-            bgcolor: "#fff",
-            p: 1.5,
-            borderRadius: 2,
-          }}
           onChange={(e) => setAmount(e.target.value)}
         />
         <TextField
+          value={term}
           id="filled-basic"
           label="Plazo para pagar (años)"
           variant="filled"
-          sx={{
-            bgcolor: "#fff",
-            p: 1.5,
-            borderRadius: 2,
-          }}
           onChange={(e) => setTerm(e.target.value)}
         />
-      </Box>
-
-      <br />
-      <Box sx={{ bgcolor: "#fff", p: 1.5, borderRadius: 2 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <FormControl fullWidth variant="filled">
+          <InputLabel id="demo-simple-select-filled-label">
+            Seleccione el Tipo de Crédito
+          </InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            //value={age}
-            label="Age"
+            labelId="demo-simple-select-filled-label"
+            id="demo-simple-select-filled"
+            value={type}
             onChange={(e) => {
-              handleCreditType(e.target.value);
+              setType(e.target.value);
             }}
           >
+            <MenuItem value="">
+              <em>Selecciona una opción</em>
+            </MenuItem>
             <MenuItem value={1}>Primera Vivienda</MenuItem>
             <MenuItem value={2}>Segunda Vivienda</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value={3}>Propiedades Comerciales</MenuItem>
+            <MenuItem value={4}>Remodelación</MenuItem>
           </Select>
         </FormControl>
       </Box>
+      <br />
 
-      <br />
-      <div>
-        <label>Tipo de Crédito:</label>
-        <select
-          id="dropdown"
-          onChange={(e) => {
-            handleCreditType(e.target.value);
-          }}
-        >
-          <option value="">Selecciona el Tipo de Crédito</option>
-          <option value={1}>Primera Vivienda</option>
-          <option value={2}>Segunda Vivienda</option>
-          <option value={3}>Propiedades Comerciales</option>
-          <option value={4}>Remodelación</option>
-        </select>
-      </div>
-      <br />
       <CreditConditionsView id={type} />
 
-      {type && (
-        <>
-          <p>Tasa de Interés (anual): {interestRate}%</p>
-          <p>
-            Monto Máximo Financiamiento: {maximumFinancing * 100}% del valor de
-            la propiedad
-          </p>
-          <p>Plazo Máximo: {maxTerm} años</p>
-        </>
-      )}
-
-      <Button variant="contained">Contained</Button>
-      <div className="col-12">
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={(e) => simulateCreditApplication(e)}
-        >
-          Simular
-        </button>
-      </div>
+      <Button
+        color="success"
+        variant="contained"
+        endIcon={<SendIcon />}
+        onClick={(e) => simulateCreditApplication(e)}
+      >
+        Simular
+      </Button>
       <br />
       {monthlyInstallment && (
         <>
+          <Box
+            sx={{
+              position: "fixed", // Superposición
+              top: "5%", // Posición desde la parte superior
+              left: "50%", // Centrar horizontalmente
+              transform: "translate(-50%, 0)", // Ajuste al centro
+              zIndex: 1300, // Prioridad para estar encima
+            }}
+          >
+            <Alert
+              severity="success"
+              action={
+                <Button color="inherit" size="small">
+                  Aceptar
+                </Button>
+              }
+            >
+              Simulación exitosa, la cuota mensual es de ${monthlyInstallment}{" "}
+              pesos
+            </Alert>
+          </Box>
           <h2>Resultados</h2>
-          <p>
-            Cuota mensual: ${Number(monthlyInstallment).toLocaleString("es-CL")}{" "}
-            pesos
-          </p>
-          <p>
-            Monto Solicitado: ${Number(amount).toLocaleString("es-CL")} pesos
-          </p>
-          <p>Plazo para Pagar: {term} años</p>
+          <h3>Cuota mensual: ${monthlyInstallment} pesos</h3>
         </>
       )}
     </>

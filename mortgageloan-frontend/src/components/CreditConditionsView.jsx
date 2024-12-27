@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
+import { Box, Typography } from "@mui/material";
 
 const CreditConditionsView = ({ id }) => {
   const [type, setType] = useState("");
@@ -8,29 +9,56 @@ const CreditConditionsView = ({ id }) => {
   const [maximumFinancing, setMaximumFinancing] = useState("");
 
   const handleCreditType = (e) => {
+    console.log("Tipo de Crédito:", e);
     setType(e);
     mortgageLoanCondition.get(e).then((response) => {
       console.log("Condiciones de Crédito:", response.data);
       setMaxTerm(response.data.maximumTerm);
       setInterestRate(response.data.interestRate);
-      setMaximumFinancing(response.data.maximumFinancingAmount);
+      setMaximumFinancing(response.data.maximumFinancingAmount * 100);
     });
   };
 
   useEffect(() => {
-    handleCreditType(id);
+    if (id) {
+      handleCreditType(id);
+    }
   }, [id]);
 
   return (
     <>
       {type && (
         <>
-          <p>Tasa de Interés (anual): {interestRate}%</p>
-          <p>
-            Monto Máximo Financiamiento: {maximumFinancing * 100}% del valor de
-            la propiedad
-          </p>
-          <p>Plazo Máximo: {maxTerm} años</p>
+          <Typography variant="h6" component="h3" gutterBottom>
+            Tasa de Interés (anual): {interestRate}%
+          </Typography>
+          <h3>Tasa de Interés (anual): {interestRate}%</h3>
+          <h3>
+            Monto Máximo Financiamiento: {maximumFinancing}% del valor de la
+            propiedad
+          </h3>
+          <h3>Plazo Máximo: {maxTerm} años</h3>
+          <Box
+            sx={{
+              bgcolor: "#435", // Color de fondo
+              p: 3, // Padding interno
+              borderRadius: 2, // Bordes redondeados
+              boxShadow: 2, // Sombra para darle profundidad
+              maxWidth: "400px", // Ancho máximo
+              margin: "auto", // Centrar horizontalmente
+            }}
+          >
+            <Typography variant="h6" component="h3" gutterBottom>
+              Tasa de Interés (anual): {interestRate}%
+            </Typography>
+            <Typography variant="h6" component="h3" gutterBottom>
+              Monto Máximo Financiamiento: {maximumFinancing}% del valor de la
+              propiedad
+            </Typography>
+            <Typography variant="h6" component="h3">
+              Plazo Máximo: {maxTerm} años
+            </Typography>
+          </Box>
         </>
       )}
     </>
