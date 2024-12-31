@@ -1,0 +1,25 @@
+import { TextField } from "@mui/material";
+
+const CustomTextField = ({ label, value, onChange, type = "text", error }) => {
+  return (
+    <TextField
+      id="outlined-error"
+      error={error}
+      value={value}
+      label={label}
+      variant="filled"
+      type={type}
+      helperText={error ? "Ingrese una entrada válida" : ""}
+      onChange={onChange}
+      sx={{
+        m: 1,
+        width: "100%",
+        bgcolor: "#fff",
+        p: 1.5,
+        borderRadius: 2,
+      }}
+    />
+  );
+};
+
+export default CustomTextField;

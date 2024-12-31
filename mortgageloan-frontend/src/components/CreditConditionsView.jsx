@@ -29,18 +29,9 @@ const CreditConditionsView = ({ id }) => {
     <>
       {type && (
         <>
-          <Typography variant="h6" component="h3" gutterBottom>
-            Tasa de Interés (anual): {interestRate}%
-          </Typography>
-          <h3>Tasa de Interés (anual): {interestRate}%</h3>
-          <h3>
-            Monto Máximo Financiamiento: {maximumFinancing}% del valor de la
-            propiedad
-          </h3>
-          <h3>Plazo Máximo: {maxTerm} años</h3>
           <Box
             sx={{
-              bgcolor: "#435", // Color de fondo
+              bgcolor: "#fff", // Color de fondo
               p: 3, // Padding interno
               borderRadius: 2, // Bordes redondeados
               boxShadow: 2, // Sombra para darle profundidad
