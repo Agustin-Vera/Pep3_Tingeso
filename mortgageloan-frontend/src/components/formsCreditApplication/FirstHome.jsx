@@ -1,19 +1,15 @@
+import CustomFileField from "../common/inputs/CustomFileField";
+
 const FirstHome = ({ setCreditHistoryDoc }) => {
   return (
     <div>
       <h2>Primera Vivienda</h2>
-      <div>
-        <label htmlFor="archivo">Ingresar Historial Crediticio:</label>
-        <input
-          type="file"
-          id="archivo"
-          name="creditHistoryDoc"
-          accept="application/pdf"
-          onChange={(e) => {
-            setCreditHistoryDoc(e.target.files[0]);
-          }}
-        />
-      </div>
+      <CustomFileField
+        id="archivo"
+        name="creditHistoryDoc"
+        label="Ingresar Historial Crediticio:"
+        onChange={setCreditHistoryDoc}
+      />
     </div>
   );
 };

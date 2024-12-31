@@ -1,3 +1,5 @@
+import CustomFileField from "../common/inputs/CustomFileField";
+
 const CommercialProperty = ({
   setFinancialStatusBusinessDoc,
   setBusinessPlanDoc,
@@ -5,30 +7,19 @@ const CommercialProperty = ({
   return (
     <div>
       <h2>Propiedad Comercial</h2>
-      <div>
-        <label htmlFor="archivo">Ingresar Estado Financiero del Negocio:</label>
-        <input
-          type="file"
-          id="archivo"
-          name="financialStatusBusinessDoc"
-          accept="application/pdf"
-          onChange={(e) => {
-            setFinancialStatusBusinessDoc(e.target.files[0]);
-          }}
-        />
-      </div>
-      <div>
-        <label htmlFor="archivo">Ingresar Plan de Negocios:</label>
-        <input
-          type="file"
-          id="archivo"
-          name="businessPlanDoc"
-          accept="application/pdf"
-          onChange={(e) => {
-            setBusinessPlanDoc(e.target.files[0]);
-          }}
-        />
-      </div>
+      <CustomFileField
+        id="archivo"
+        name="financialStatusBusinessDoc"
+        label="Ingresar Estado Financiero del Negocio:"
+        onChange={setFinancialStatusBusinessDoc}
+      />
+      <br />
+      <CustomFileField
+        id="archivo"
+        name="businessPlanDoc"
+        label="Ingresar Plan de Negocios:"
+        onChange={setBusinessPlanDoc}
+      />
     </div>
   );
 };

@@ -60,6 +60,15 @@ const SimulateCredit = () => {
       <h1>Simulación de Crédito</h1>
       <p>Complete los campos a continuación</p>
       <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
+        <Box sx={{ p: 1, flex: 1 }}>
+          <CustomSelect
+            label="Seleccione el Tipo de Crédito"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            options={creditOptions}
+          />
+          <CreditConditionsView id={type} />
+        </Box>
         <Box
           component="form"
           noValidate
@@ -80,15 +89,6 @@ const SimulateCredit = () => {
             error={term < 0}
             onChange={(e) => setTerm(e.target.value)}
           />
-        </Box>
-        <Box sx={{ p: 1, flex: 1 }}>
-          <CustomSelect
-            label="Seleccione el Tipo de Crédito"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            options={creditOptions}
-          />
-          <CreditConditionsView id={type} />
         </Box>
       </Box>
       <Button

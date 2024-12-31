@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import creditApplicationService from "../../services/creditApplicationService";
 import DocumentsView from "../document/DocumentsView";
 
-/**
- * Componente que representa la regla de negocio R1
- * @param {*} props
- * @returns
- */
 const R1InstallmentIncome = (props) => {
   const [answerEvaluation, setAnswerEvaluation] = useState();
   const [income, setIncome] = useState("");

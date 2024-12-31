@@ -7,6 +7,11 @@ import FirstHome from "./formsCreditApplication/FirstHome";
 import SecondHome from "./formsCreditApplication/SecondHome";
 import CommercialProperty from "./formsCreditApplication/CommercialProperty";
 import Remodeling from "./formsCreditApplication/Remodeling";
+import { Box, Button } from "@mui/material";
+import CustomTextField from "./common/inputs/CustomTextField";
+import CustomFileField from "./common/inputs/CustomFileField";
+import CustomSelect from "./common/inputs/CustomSelect";
+import SendIcon from "@mui/icons-material/Send";
 
 const AddCreditApplication = () => {
   const [rutUser, setRutUser] = useState("");
@@ -64,20 +69,20 @@ const AddCreditApplication = () => {
           formData.append("documentType", 2);
           formData.append("documents", appraisalCertificateDoc);
           formData.append("documentType", 3);
-          if (type === "1") {
+          if (type === 1) {
             formData.append("documents", creditHistoryDoc);
             formData.append("documentType", 4);
-          } else if (type === "2") {
+          } else if (type === 2) {
             formData.append("documents", creditHistoryDoc);
             formData.append("documentType", 4);
             formData.append("documents", firstHomeDeedDoc);
             formData.append("documentType", 5);
-          } else if (type === "3") {
+          } else if (type === 3) {
             formData.append("documents", financialStatusBusinessDoc);
             formData.append("documentType", 6);
             formData.append("documents", businessPlanDoc);
             formData.append("documentType", 7);
-          } else if (type === "4") {
+          } else if (type === 4) {
             formData.append("documents", renovationBudgetDoc);
             formData.append("documentType", 8);
           }
@@ -87,7 +92,11 @@ const AddCreditApplication = () => {
             .create(formData)
             .then((response) => {
               console.log("Documento subido", response.data);
-              navigate("/creditApplication/list");
+              navigate(
+                `/creditApplication/list/${rutUser}/${formData.get(
+                  "idApplication"
+                )}`
+              );
             })
             .catch((error) => {
               console.log("Error al intentar subir los documentos", error);
@@ -103,132 +112,116 @@ const AddCreditApplication = () => {
     }
     console.log("Ingresar los campos faltantes");
   };
+  const creditOptions = [
+    { value: 1, label: "Primera Vivienda" },
+    { value: 2, label: "Segunda Vivienda" },
+    { value: 3, label: "Propiedades Comerciales" },
+    { value: 4, label: "Remodelación" },
+  ];
 
   useEffect(() => {}, []);
   return (
     <>
       <h1>Solicitud de Crédito</h1>
-      <form>
+      <Box sx={{ width: "90%" }}>
+        <CustomSelect
+          label="Seleccione el Tipo de Crédito"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          options={creditOptions}
+        />
+      </Box>
+      <Box>
         <h2>Información Personal</h2>
-        <div>
-          <label>Ingrese su rut:</label>
-          <input
-            type="text"
-            value={rutUser}
-            onChange={(e) => setRutUser(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="archivo">
-            Ingrese Documento de Identificación Personal:
-          </label>
-          <input
-            type="file"
-            id="archivo"
-            name="identificationDoc"
-            accept="application/pdf"
-            onChange={(e) => {
-              setIdentificationDoc(e.target.files[0]);
-            }}
-          />
-        </div>
-        <div>
-          <label>Ingrese el monto a solicitar:</label>
-          <input
-            type="text"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="archivo">Ingrese Comprobante de Ingresos:</label>
-          <input
-            type="file"
-            id="archivo"
-            name="proofIncomeDoc"
-            accept="application/pdf"
-            onChange={(e) => {
-              setProofIncomeDoc(e.target.files[0]);
-            }}
-          />
-        </div>
-        <br />
-        <h2>Información Financiera Personal</h2>
-        <div>
-          <label htmlFor="archivo">Ingresar Certificado de Avalúo:</label>
-          <input
-            type="file"
-            id="archivo"
-            name="appraisalCertificateDoc"
-            accept="application/pdf"
-            onChange={(e) => {
-              setAppraisalCertificateDoc(e.target.files[0]);
-            }}
-          />
-        </div>
-        <div>
-          <label>Ingrese el Plazo (en años):</label>
-          <input
-            type="text"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-          />
-        </div>
-        <br />
-        <h2>Información Crediticia</h2>
-        <div>
-          <label>Tipo de Crédito:</label>
-          <select
-            id="dropdown"
-            onChange={(e) => {
-              setType(e.target.value);
-            }}
-          >
-            <option value="">Selecciona el Tipo de Crédito</option>
-            <option value={1}>Primera Vivienda</option>
-            <option value={2}>Segunda Vivienda</option>
-            <option value={3}>Propiedades Comerciales</option>
-            <option value={4}>Remodelación</option>
-          </select>
-        </div>
-        <br />
-        {type === "1" && (
-          <>
-            <FirstHome setCreditHistoryDoc={setCreditHistoryDoc} />
-          </>
-        )}
-        {type === "2" && (
-          <>
-            <SecondHome
-              setCreditHistoryDoc={setCreditHistoryDoc}
-              setFirstHomeDeedDoc={setFirstHomeDeedDoc}
+        <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <CustomTextField
+              label="Ingrese su rut. Ej: 12345678-9"
+              value={rutUser}
+              onChange={(e) => setRutUser(e.target.value)}
+              type="text"
+              //error={amount < 0}
             />
-          </>
-        )}
-        {type === "3" && (
-          <>
-            <CommercialProperty
-              setFinancialStatusBusinessDoc={setFinancialStatusBusinessDoc}
-              setBusinessPlanDoc={setBusinessPlanDoc}
+            <CustomFileField
+              id="archivo"
+              name="identificationDoc"
+              label="Ingrese Documento de Identificación Personal:"
+              onChange={setIdentificationDoc}
             />
-          </>
-        )}
-        {type === "4" && (
-          <>
-            <Remodeling setRenovationBudgetDoc={setRenovationBudgetDoc} />
-          </>
-        )}
-      </form>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <CustomTextField
+              label="Ingrese el monto a solicitar. Ej: 100.000.000"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              type="number"
+              error={amount < 0}
+            />
+            <CustomFileField
+              id="archivo"
+              name="proofIncomeDoc"
+              label="Ingrese su Comprobante de Ingresos:"
+              onChange={setProofIncomeDoc}
+            />
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <br />
+            <CustomTextField
+              label="Ingrese el Plazo (en años). Ej: 20"
+              value={term}
+              onChange={(e) => setTerm(e.target.value)}
+              type="number"
+              error={term < 0}
+            />
+            <CustomFileField
+              id="archivo"
+              name="appraisalCertificateDoc"
+              label="Ingrese su Certificado de Avalúo:"
+              onChange={setAppraisalCertificateDoc}
+            />
+            <br />
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            {type === 1 && (
+              <>
+                <FirstHome
+                  setCreditHistoryDoc={(file) => setCreditHistoryDoc(file)}
+                />
+              </>
+            )}
+            {type === 2 && (
+              <>
+                <SecondHome
+                  setCreditHistoryDoc={setCreditHistoryDoc}
+                  setFirstHomeDeedDoc={setFirstHomeDeedDoc}
+                />
+              </>
+            )}
+            {type === 3 && (
+              <>
+                <CommercialProperty
+                  setFinancialStatusBusinessDoc={setFinancialStatusBusinessDoc}
+                  setBusinessPlanDoc={setBusinessPlanDoc}
+                />
+              </>
+            )}
+            {type === 4 && (
+              <>
+                <Remodeling setRenovationBudgetDoc={setRenovationBudgetDoc} />
+              </>
+            )}
+          </Box>
+        </Box>
+      </Box>
       <br />
-      <div className="col-12">
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={(e) => saveCreditApplication(e)}
-        >
-          Enviar Solicitud
-        </button>
-      </div>
+      <Button
+        color="success"
+        variant="contained"
+        endIcon={<SendIcon />}
+        onClick={saveCreditApplication}
+      >
+        Enviar
+      </Button>
     </>
   );
 };

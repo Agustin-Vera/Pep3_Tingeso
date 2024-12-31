@@ -25,6 +25,7 @@ public class DocumentController {
         try {
             for (int i = 0; i < documents.length; i++) {
                 MultipartFile document = documents[i];
+                System.out.println(document.getOriginalFilename());
                 Integer documentType = documentTypes[i];
                 docService.saveDocument(idApplication, document, documentType);
             }
