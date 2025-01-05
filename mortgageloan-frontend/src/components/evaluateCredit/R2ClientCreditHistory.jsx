@@ -1,3 +1,7 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { Button } from "@mui/material";
+
 const R2ClientCreditHistory = (props) => {
   return (
     <div>
@@ -6,8 +10,18 @@ const R2ClientCreditHistory = (props) => {
         Se revisa el historial crediticio del cliente en DICOM (Directorio de
         Información Comercial) ...
       </p>
-      <button onClick={props.nextStep}>Aprobar</button>
-      <button
+      <Button
+        color="success"
+        variant="contained"
+        endIcon={<CheckCircleOutlineIcon />}
+        onClick={props.nextStep}
+      >
+        Aprobar
+      </Button>
+      <Button
+        color="error"
+        variant="contained"
+        endIcon={<ErrorIcon />}
         onClick={() =>
           props.onFailure(
             "Rechazada, el historial crediticio del cliente no es aprobado"
@@ -15,7 +29,7 @@ const R2ClientCreditHistory = (props) => {
         }
       >
         Rechazar
-      </button>
+      </Button>
     </div>
   );
 };

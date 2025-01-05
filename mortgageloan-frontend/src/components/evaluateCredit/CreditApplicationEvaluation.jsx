@@ -32,10 +32,6 @@ const CreditApplicationEvaluation = ({
   const [amount, setAmount] = useState("");
   const [term, setTerm] = useState("");
 
-  // Estados para los datos del usuario
-  const [username, setUsername] = useState("");
-  const [userLastname, setUserLastname] = useState("");
-
   const nextStep = () => setStep((prev) => prev + 1);
 
   const handleFailure = (mensaje) => {
@@ -53,22 +49,9 @@ const CreditApplicationEvaluation = ({
         setType(creditApplication.data.type);
         setAmount(creditApplication.data.amount);
         setTerm(creditApplication.data.term);
-        initUser(creditApplication.data.rutUser);
       })
       .catch((error) => {
         console.log("Error al obtener la solicitud de crédito", error);
-      });
-  };
-  const initUser = (rutUser) => {
-    userService
-      .getByRut(rutUser)
-      .then((user) => {
-        console.log("Usuario:", user.data);
-        setUsername(user.data.name);
-        setUserLastname(user.data.lastname);
-      })
-      .catch((error) => {
-        console.log("Error al obtener el usuario", error);
       });
   };
 

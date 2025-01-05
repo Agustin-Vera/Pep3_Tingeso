@@ -1,11 +1,21 @@
 import { useState } from "react";
 import creditApplicationService from "../../services/creditApplicationService";
+import { Button } from "@mui/material";
+import CalculateIcon from "@mui/icons-material/Calculate";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorIcon from "@mui/icons-material/Error";
+import SeverityAlert from "../common/alerts/SeverityAlert";
 
 const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
   const [answerEvaluation, setAnswerEvaluation] = useState("");
   const [birthday, setBirthday] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthYear, setBirhtYear] = useState("");
+
+  const [severityAlert, setSeverityAlert] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const evaluate = () => {
     console.log("Evaluando R6");
     const birthDate = new Date(birthYear, birthMonth - 1, birthday);
@@ -16,9 +26,13 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
         console.log("Respuesta: ", response);
         if (response.data.approved === true) {
           setAnswerEvaluation(response.data.message);
+          setSeverity("success");
         } else {
           setAnswerEvaluation(response.data.message);
+          setSeverity("error");
         }
+        setAlertMessage(response.data.message);
+        setSeverityAlert(true);
       })
       .catch((error) => {
         console.log("Error al evaluar R6", error);
@@ -52,16 +66,39 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
           onChange={(e) => setBirhtYear(e.target.value)}
         />
       </div>
-      <button onClick={evaluate}>Evaluar</button>
-      <button onClick={nextStep}>Aprobar</button>
-      <button
+      <br />
+      <Button
+        color="primary"
+        variant="contained"
+        endIcon={<CalculateIcon />}
+        onClick={evaluate}
+      >
+        Evaluar
+      </Button>
+      <Button
+        color="success"
+        variant="contained"
+        endIcon={<CheckCircleOutlineIcon />}
+        onClick={nextStep}
+      >
+        Aprobar
+      </Button>
+      <Button
+        color="error"
+        variant="contained"
+        endIcon={<ErrorIcon />}
         onClick={() =>
           onFailure("Rechazada, la edad del usuario es muy elevada")
         }
       >
         Rechazar
-      </button>
-      <p>Resultado: {answerEvaluation}</p>
+      </Button>
+      <SeverityAlert
+        open={severityAlert}
+        onClose={() => setSeverityAlert(false)}
+        severity={severity}
+        message={alertMessage}
+      ></SeverityAlert>
     </div>
   );
 };

@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
 import creditApplicationService from "../../services/creditApplicationService";
 import DocumentsView from "../document/DocumentsView";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
+import CustomTextField from "../common/inputs/CustomTextField";
+import CalculateIcon from "@mui/icons-material/Calculate";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import SeverityAlert from "../common/alerts/SeverityAlert";
 
 const R1InstallmentIncome = (props) => {
   const [answerEvaluation, setAnswerEvaluation] = useState();
   const [income, setIncome] = useState("");
+
+  const [severityAlert, setSeverityAlert] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const evaluate = () => {
     creditApplicationService.evaluateR1(props.id, income).then((response) => {
       console.log("Respuesta: ", response);
       if (response.data.approved === true) {
         setAnswerEvaluation(response.data.message);
+        setSeverity("success");
       } else {
         setAnswerEvaluation(response.data.message);
+        setSeverity("error");
       }
+      setAlertMessage(response.data.message);
+      setSeverityAlert(true);
     });
   };
 
@@ -26,23 +38,32 @@ const R1InstallmentIncome = (props) => {
         Monto a pedir: ${Number(props.amount).toLocaleString("es-CL")} pesos
       </p>
       <p>Plazo para pagar: {props.term} años</p>
-      <div>
-        <label>Ingrese los ingresos mensuales del usuario:</label>
-        <input
-          type="text"
+      <Box sx={{ maxWidth: 300, margin: "auto" }}>
+        <CustomTextField
+          label="Ingresos mensuales del cliente. Ej: 1.000.000"
           value={income}
           onChange={(e) => setIncome(e.target.value)}
+          type="number"
+          error={income < 0}
         />
-      </div>
-      <button onClick={evaluate}>Evaluar</button>
-      <button onClick={props.nextStep}>Aprobar</button>
-      <button
-        onClick={() =>
-          props.onFailure("Rechazada, la capacidad de pago es insuficiente")
-        }
+      </Box>
+      <br /> <br />
+      <Button
+        color="primary"
+        variant="contained"
+        endIcon={<CalculateIcon />}
+        onClick={evaluate}
       >
-        Rechazar
-      </button>
+        Evaluar
+      </Button>
+      <Button
+        color="success"
+        variant="contained"
+        endIcon={<CheckCircleOutlineIcon />}
+        onClick={props.nextStep}
+      >
+        Aprobar
+      </Button>
       <Button
         color="error"
         variant="contained"
@@ -53,7 +74,12 @@ const R1InstallmentIncome = (props) => {
       >
         Rechazar
       </Button>
-      <p>Resultado: {answerEvaluation}</p>
+      <SeverityAlert
+        open={severityAlert}
+        onClose={() => setSeverityAlert(false)}
+        severity={severity}
+        message={alertMessage}
+      ></SeverityAlert>
     </div>
   );
 };
