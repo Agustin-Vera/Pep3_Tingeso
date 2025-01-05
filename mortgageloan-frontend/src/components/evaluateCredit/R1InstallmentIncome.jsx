@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import creditApplicationService from "../../services/creditApplicationService";
 import DocumentsView from "../document/DocumentsView";
+import { Button } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const R1InstallmentIncome = (props) => {
   const [answerEvaluation, setAnswerEvaluation] = useState();
@@ -41,6 +43,16 @@ const R1InstallmentIncome = (props) => {
       >
         Rechazar
       </button>
+      <Button
+        color="error"
+        variant="contained"
+        endIcon={<ErrorIcon />}
+        onClick={() =>
+          props.onFailure("Rechazada, la capacidad de pago es insuficiente")
+        }
+      >
+        Rechazar
+      </Button>
       <p>Resultado: {answerEvaluation}</p>
     </div>
   );

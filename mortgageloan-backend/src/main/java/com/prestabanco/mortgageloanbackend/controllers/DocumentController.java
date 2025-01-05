@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -36,15 +38,18 @@ public class DocumentController {
     }
 
     @GetMapping("/{idApplication}/{documentType}")
-    public ResponseEntity<byte[]> getDocumentByIdAppDocType(@PathVariable("idApplication") Long idApplication, @PathVariable("documentType") Integer documentType) {
+    public ResponseEntity<Map<String, Object>> getDocumentByIdAppDocType(@PathVariable("idApplication") Long idApplication, @PathVariable("documentType") Integer documentType) {
         try {
             DocumentEntity document = docService.getDocByIdAppDocType(idApplication, documentType);
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + document.getName() + "\"")
-                    .contentType(MediaType.APPLICATION_PDF) // siemore pdf
-                    .body(document.getData()); // devolvemos los datos binarios
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("name", document.getName()); 
+            response.put("data", document.getData());
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 }

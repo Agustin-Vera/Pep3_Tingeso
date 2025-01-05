@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import creditApplicationService from "../services/creditApplicationService";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 const CreditApplicationList = () => {
   const [creditApplcations, setCreditApplcation] = useState([]);
@@ -29,36 +41,61 @@ const CreditApplicationList = () => {
   }, [userRut]);
 
   return (
-    <div>
+    <Box>
       <h1>Lista de Solicitudes</h1>
-      <div className="table-responsive">
-        <table className="table">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Rut</th>
-              <th scope="col">Tipo</th>
-              <th scope="col">Monto</th>
-              <th scope="col">Plazo</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {creditApplcations.map((creditApplication, index) => (
-              <tr key={index}>
-                <td>{creditApplication.id_application}</td>
-                <td>{creditApplication.rutUser}</td>
-                <td>{creditApplication.type}</td>
-                <td>{creditApplication.amount}</td>
-                <td>{creditApplication.term}</td>
-                <td>{creditApplication.state}</td>
-                <td>{creditApplication.stateDescription}</td>
-                <td>
+      <TableContainer component={Paper} sx={{ boxShadow: 24 }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{ bgcolor: "#bdbdbd" }}>
+            <TableRow>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                ID
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Rut
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Tipo
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Monto
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Plazo
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Estado
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Descripción
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Acciones
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {creditApplcations.map((creditApplication) => (
+              <TableRow
+                key={creditApplication.id_application}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="left">
+                  {creditApplication.id_application}
+                </TableCell>
+                <TableCell align="left">{creditApplication.rutUser}</TableCell>
+                <TableCell align="left">{creditApplication.type}</TableCell>
+                <TableCell align="left">{creditApplication.amount}</TableCell>
+                <TableCell align="left">{creditApplication.term}</TableCell>
+                <TableCell align="left">{creditApplication.state}</TableCell>
+                <TableCell align="left">
+                  {creditApplication.stateDescription}
+                </TableCell>
+                <TableCell>
                   {userRut ? (
-                    <button
-                      className="btn btn-primary"
+                    <Button
+                      color="success"
+                      variant="contained"
+                      endIcon={<SendIcon />}
                       onClick={() =>
                         navigate(
                           `/creditApplication/list/${userRut}/${creditApplication.id_application}`
@@ -66,27 +103,28 @@ const CreditApplicationList = () => {
                       }
                     >
                       Ver Mi Solicitud
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      className="btn btn-success"
+                    <Button
+                      color="success"
+                      variant="contained"
+                      endIcon={<SendIcon />}
                       onClick={() =>
                         navigate(
                           `/creditApplication/managment/${creditApplication.id_application}`
                         )
                       }
                     >
-                      Administrar Solicitud
-                    </button>
+                      Administrar
+                    </Button>
                   )}
-                </td>
-                <td></td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 export default CreditApplicationList;

@@ -4,6 +4,9 @@ import creditApplicationService from "../services/creditApplicationService";
 import CreditApplicationEvaluation from "./evaluateCredit/CreditApplicationEvaluation";
 import DocumentsList from "./document/DocumentsList";
 import statusService from "../services/statusService";
+import RuleIcon from "@mui/icons-material/Rule";
+import SendIcon from "@mui/icons-material/Send";
+import { Box, Button, Divider } from "@mui/material";
 
 const CreditApplicationManagment = () => {
   const { id } = useParams();
@@ -102,27 +105,44 @@ const CreditApplicationManagment = () => {
   }, [id, state]);
 
   return (
-    <div>
+    <Box>
       <h1>Administración - Solicitud Crediticia</h1>
-      <p>ID de solicitud: {id}</p>
-      <p>Rut cliente: {rutUser}</p>
-      <p>Tipo de solicitud: {type}</p>
-      <p>Monto: ${amount} pesos</p>
-      <p>Plazo: {term} años</p>
-      <h2>Estado de Solicitud: {stateDescription}</h2>
+      <Divider />
       <h2>ESTADO: {stateName}</h2>
-      <h3>Descripción del Estado: {stateDescription2}</h3>
+      <h3>{stateDescription2}</h3>
+      <Divider />
+      <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
+        <Box sx={{ p: 1, flex: 1 }}>
+          <p>ID de solicitud: {id}</p>
+          <p>Rut cliente: {rutUser}</p>
+          <p>Tipo de solicitud: {type}</p>
+          <p>Monto: ${amount} pesos</p>
+          <p>Plazo: {term} años</p>
+        </Box>
+        <Box sx={{ p: 1, flex: 1 }}>
+          <DocumentsList idApplication={id} loanType={type} />
+        </Box>
+      </Box>
+
+      <Divider />
       {state === 1 && (
         <>
-          <p>Revisar documentación de solicitud creditia del cliente</p>
-          <button
+          <p>Revisar documentación de solicitud crediticia del cliente</p>
+          <br /> <br />
+          <Button
+            color="success"
+            variant="contained"
+            endIcon={<SendIcon />}
             onClick={() =>
               handleCreditApplicationState(state + 2, "En Evaluación")
             }
           >
-            Aprobar Revisión
-          </button>
-          <button
+            Aprobar
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            endIcon={<RuleIcon />}
             onClick={() =>
               handleCreditApplicationState(
                 state + 1,
@@ -131,21 +151,23 @@ const CreditApplicationManagment = () => {
             }
           >
             Falta Documentación
-          </button>
-          <DocumentsList idApplication={id} loanType={type} />
+          </Button>
         </>
       )}
       {state === 2 && (
         <>
           <p>Faltan documentos por subir ...</p>
-          <button
+          <br /> <br />
+          <Button
+            color="success"
+            variant="contained"
+            endIcon={<SendIcon />}
             onClick={() =>
               handleCreditApplicationState(state + 1, "En Evaluación")
             }
           >
-            Aprobar Revisión
-          </button>
-          <DocumentsList idApplication={id} loanType={type} />
+            Aprobar
+          </Button>
         </>
       )}
       {state === 3 && (
@@ -226,7 +248,7 @@ const CreditApplicationManagment = () => {
           </p>
         </>
       )}
-    </div>
+    </Box>
   );
 };
 export default CreditApplicationManagment;

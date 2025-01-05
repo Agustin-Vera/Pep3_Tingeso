@@ -9,6 +9,14 @@ import R5MaxAmountFinancing from "./R5MaxAmountFinancing";
 import R6ApplicantAge from "./R6ApplicantAge";
 import R7SavingCapacity from "./R7SavingCapacity";
 import DocumentsList from "../document/DocumentsList";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const CreditApplicationEvaluation = ({
   id,
@@ -69,7 +77,7 @@ const CreditApplicationEvaluation = ({
   }, [rutUser]);
 
   return (
-    <div>
+    <Box>
       {isApproved ? (
         <>
           {step === 1 && (
@@ -137,12 +145,11 @@ const CreditApplicationEvaluation = ({
               </button>
             </>
           )}
-          <DocumentsList idApplication={id} loanType={type} />
         </>
       ) : (
         <p>La solicitud ha sido rechazada...</p>
       )}
-    </div>
+    </Box>
   );
 };
 export default CreditApplicationEvaluation;

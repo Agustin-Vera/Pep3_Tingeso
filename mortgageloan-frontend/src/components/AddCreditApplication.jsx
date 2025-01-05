@@ -184,9 +184,7 @@ const AddCreditApplication = () => {
           <Box sx={{ display: "flex", gap: 2 }}>
             {type === 1 && (
               <>
-                <FirstHome
-                  setCreditHistoryDoc={(file) => setCreditHistoryDoc(file)}
-                />
+                <FirstHome setCreditHistoryDoc={setCreditHistoryDoc} />
               </>
             )}
             {type === 2 && (

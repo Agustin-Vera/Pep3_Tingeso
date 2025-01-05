@@ -9,9 +9,7 @@ const create = (data) => {
 };
 
 const getByIdAppDocType = (idApplication, documentType) => {
-  return httpClient.get(`/api/documents/${idApplication}/${documentType}`, {
-    responseType: "arraybuffer",
-  });
+  return httpClient.get(`/api/documents/${idApplication}/${documentType}`);
 };
 
 export default { create, getByIdAppDocType };
