@@ -7,11 +7,12 @@ import statusService from "../services/statusService";
 import RuleIcon from "@mui/icons-material/Rule";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Divider } from "@mui/material";
+import CreditConditionsView from "./CreditConditionsView";
 
 const CreditApplicationManagment = () => {
   const { id } = useParams();
   const [state, setState] = useState("");
-  const [step, setStep] = useState(1); // Define the step variable
+  const [step, setStep] = useState(1);
   const [rutUser, setRutUser] = useState("");
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
@@ -108,20 +109,20 @@ const CreditApplicationManagment = () => {
     <Box>
       <h1>Administración - Solicitud Crediticia</h1>
       <Divider />
-      <h2>ESTADO: {stateName}</h2>
+      <h2>Estado: {stateName}</h2>
       <h3>{stateDescription2}</h3>
       <Divider />
       <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
         <Box sx={{ p: 1, flex: 1 }}>
           <p>ID de solicitud: {id}</p>
           <p>Rut cliente: {rutUser}</p>
-          <p>Tipo de solicitud: {type}</p>
           <p>Monto: ${amount} pesos</p>
           <p>Plazo: {term} años</p>
         </Box>
         <Box sx={{ p: 1, flex: 1 }}>
           <DocumentsList idApplication={id} loanType={type} />
         </Box>
+        <CreditConditionsView id={type} />
       </Box>
 
       <Divider />

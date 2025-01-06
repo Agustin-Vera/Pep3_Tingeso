@@ -7,6 +7,7 @@ const CreditConditionsView = ({ id }) => {
   const [maxTerm, setMaxTerm] = useState("");
   const [interestRate, setInterestRate] = useState("");
   const [maximumFinancing, setMaximumFinancing] = useState("");
+  const [loanName, setLoanName] = useState("");
 
   const handleCreditType = (e) => {
     console.log("Tipo de Crédito:", e);
@@ -16,6 +17,7 @@ const CreditConditionsView = ({ id }) => {
       setMaxTerm(response.data.maximumTerm);
       setInterestRate(response.data.interestRate);
       setMaximumFinancing(response.data.maximumFinancingAmount * 100);
+      setLoanName(response.data.loanType);
     });
   };
 
@@ -32,23 +34,20 @@ const CreditConditionsView = ({ id }) => {
           <Box
             sx={{
               bgcolor: "#fff", // Color de fondo
-              p: 3, // Padding interno
+              p: 1, // Padding interno
               borderRadius: 2, // Bordes redondeados
               boxShadow: 2, // Sombra para darle profundidad
               maxWidth: "400px", // Ancho máximo
               margin: "auto", // Centrar horizontalmente
             }}
           >
-            <Typography variant="h6" component="h3" gutterBottom>
-              Tasa de Interés (anual): {interestRate}%
-            </Typography>
-            <Typography variant="h6" component="h3" gutterBottom>
+            <h3>Tipo de Crédito: {loanName}</h3>
+            <p>Tasa de Interés (anual): {interestRate}%</p>
+            <p>
               Monto Máximo Financiamiento: {maximumFinancing}% del valor de la
               propiedad
-            </Typography>
-            <Typography variant="h6" component="h3">
-              Plazo Máximo: {maxTerm} años
-            </Typography>
+            </p>
+            <p>Plazo Máximo: {maxTerm} años</p>
           </Box>
         </>
       )}

@@ -4,6 +4,9 @@ import creditApplicationService from "../services/creditApplicationService";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
 import DocumentsList from "./document/DocumentsList";
 import statusService from "../services/statusService";
+import { Box, Button, Divider } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const CreditApplicationView = () => {
   const { userRut } = useParams();
@@ -102,17 +105,27 @@ const CreditApplicationView = () => {
   return (
     <>
       <h1>Seguimiento - Solicitud Crediticia</h1>
-      <h2>Estado: {stateDescription}</h2>
-      <h2>ESTADO: {stateName}</h2>
-      <h3>Descripción del Estado: {stateDescription2}</h3>
+      <Divider />
+      <h2>Estado: {stateName}</h2>
+      <h3>{stateDescription2}</h3>
+      <Divider />
       <br />
-      <p>Rut del Cliente: {userRut}</p>
-      <p>ID de Solicitud: {id}</p>
-      <p>
-        Tipo de Solicitud: {type} - {loanType}
-      </p>
-      <p>Monto Solicitado: ${amount} pesos</p>
-      <p>Plazo para Pagar: {term} años</p>
+      <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
+        <Box sx={{ p: 1, flex: 1 }}>
+          <p>Rut del Cliente: {userRut}</p>
+          <p>ID de Solicitud: {id}</p>
+          <p>Tipo de Solicitud: {loanType}</p>
+          <p>Monto Solicitado: ${amount} pesos</p>
+          <p>Plazo para Pagar: {term} años</p>
+        </Box>
+        {state <= 2 && (
+          <Box sx={{ p: 1, flex: 1 }}>
+            <DocumentsList idApplication={id} loanType={type} />
+          </Box>
+        )}
+      </Box>
+
+      <Divider />
       <br />
 
       {state === 4 && (
@@ -129,7 +142,10 @@ const CreditApplicationView = () => {
           </p>
           <p>Costo Total Final del Crédito: ${totalCost} pesos</p>
           <br />
-          <button
+          <Button
+            color="success"
+            variant="contained"
+            endIcon={<CheckCircleOutlineIcon />}
             onClick={() =>
               handleSubmit(
                 state + 1,
@@ -138,7 +154,7 @@ const CreditApplicationView = () => {
             }
           >
             Aceptar Condiciones
-          </button>
+          </Button>
         </>
       )}
       {state === 5 && (
@@ -171,12 +187,17 @@ const CreditApplicationView = () => {
           <p>El prestamo solicitado esta siendo desembolsado a usted ...</p>
         </>
       )}
+      <br />
       {state <= 5 && (
-        <button onClick={() => handleSubmit(8, "Rechazada por el cliente")}>
+        <Button
+          color="error"
+          variant="contained"
+          endIcon={<ErrorIcon />}
+          onClick={() => handleSubmit(8, "Rechazada por el cliente")}
+        >
           Rechazar Mi Solicitud
-        </button>
+        </Button>
       )}
-      {state === 2 && <DocumentsList idApplication={id} loanType={type} />}
     </>
   );
 };

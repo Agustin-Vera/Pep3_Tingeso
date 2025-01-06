@@ -1,9 +1,16 @@
 import { TextField } from "@mui/material";
 
-const CustomTextField = ({ label, value, onChange, type = "text", error }) => {
+const CustomTextField = ({
+  id = "outlined-error",
+  label,
+  value,
+  onChange,
+  type = "text",
+  error,
+}) => {
   return (
     <TextField
-      id="outlined-error"
+      id={id}
       error={error}
       value={value}
       label={label}

@@ -2,6 +2,18 @@ import { useEffect, useState } from "react";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import {
+  Box,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Table,
+  TableBody,
+} from "@mui/material";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -28,54 +40,68 @@ const UsersList = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Lista Usuarios</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ marginBottom: "1rem" }} // Espaciado debajo del botón
-      >
-        Agregar Nuevo Usuario
-      </Button>
-      <div className="table-responsive">
-        <table className="table">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">Rut</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">Solicitudes</th>
-              <th scope="col">Mi Usuario</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.rut}</td>
-                <td>{user.name}</td>
-                <td>{user.lastname}</td>
-                <td>
-                  <button
-                    className="btn btn-primary"
+    <Box>
+      <h1>Lista de Usuarios</h1>
+      <TableContainer component={Paper} sx={{ boxShadow: 24 }}>
+        <Table aria-label="simple table">
+          <TableHead sx={{ bgcolor: "#bdbdbd" }}>
+            <TableRow>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                ID
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Rut
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Nombre
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Apellido
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Solicitudes
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Mi Usuario
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow
+                key={user.id_user}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="left">{user.id_user}</TableCell>
+                <TableCell align="left">{user.rut}</TableCell>
+                <TableCell align="left">{user.name}</TableCell>
+                <TableCell align="left">{user.lastname}</TableCell>
+                <TableCell>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    endIcon={<ListAltIcon />}
                     onClick={() => handleViewMyCreditApplications(user.rut)}
                   >
                     Ver Mis Solicitudes
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-primary"
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    endIcon={<ManageAccountsIcon />}
                     onClick={() => navigate(`/user/add/${user.id_user}`)}
                   >
-                    Editar mi Usuario
-                  </button>
-                </td>
-              </tr>
+                    Editar Mi Usuario
+                  </Button>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
