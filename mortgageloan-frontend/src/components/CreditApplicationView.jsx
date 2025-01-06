@@ -123,25 +123,27 @@ const CreditApplicationView = () => {
             <DocumentsList idApplication={id} loanType={type} />
           </Box>
         )}
+        {state === 4 && (
+          <Box sx={{ flex: 1 }}>
+            <h3>Terminos de la Solicitud Créditicia</h3>
+            <p>Tasa de Interés Anual: {interestRate}%</p>
+            <p>Cuota Mensual Sin Seguros: ${monthlyInstallment} pesos</p>
+            <p>Seguro de Desgravamen: ${creditLifeInsurance} pesos</p>
+            <p>Seguro de Incendio: ${fireInsurance} pesos</p>
+            <p>Los seguros se le suman a la cuota mensual ...</p>
+            <p>
+              Comisiones por Administración (solo un pago): ${commission} pesos
+            </p>
+            <p>Costo Total Final del Crédito: ${totalCost} pesos</p>
+          </Box>
+        )}
       </Box>
 
       <Divider />
-      <br />
 
       {state === 4 && (
         <>
-          <p>El cliente debe dar la aprobación de los términos ... </p> <br />
-          <h3>Terminos de la Solicitud Créditicia</h3>
-          <p>Tasa de Interés Anual: {interestRate}%</p>
-          <p>Cuota Mensual Sin Seguros: ${monthlyInstallment} pesos</p>
-          <p>Seguro de Desgravamen: ${creditLifeInsurance} pesos</p>
-          <p>Seguro de Incendio: ${fireInsurance} pesos</p>
-          <p>Los seguros se le suman a la cuota mensual ...</p>
-          <p>
-            Comisiones por Administración (solo un pago): ${commission} pesos
-          </p>
-          <p>Costo Total Final del Crédito: ${totalCost} pesos</p>
-          <br />
+          <p>El cliente debe dar la aprobación de los términos ... </p>
           <Button
             color="success"
             variant="contained"
