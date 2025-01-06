@@ -1,3 +1,6 @@
+import { Box } from "@mui/material";
+import CustomTextField from "../common/inputs/CustomTextField";
+
 const R72SavingsHistory = ({ savings, setSavings }) => {
   const handleChange = (index, saving) => {
     const newSavings = [...savings];
@@ -12,16 +15,25 @@ const R72SavingsHistory = ({ savings, setSavings }) => {
         Considere como mes 12 el mes anterior al actual y mes 1 el mes más
         lejano al actual de los 12 meses
       </p>
-      {[...Array(12)].map((_, index) => (
-        <div key={index}>
-          <label>Ingrese el saldo del mes {index + 1}:</label>
-          <input
-            type="text"
-            value={savings[index]}
-            onChange={(e) => handleChange(index, e.target.value)}
-          />
-        </div>
-      ))}
+      <Box
+        sx={{
+          display: "grid",
+          flexDirection: "column",
+          gridTemplateColumns: "1fr 1fr",
+        }}
+      >
+        {[...Array(12)].map((_, index) => (
+          <div key={index}>
+            <CustomTextField
+              label={`Saldo de cuenta de ahorros en el mes ${index + 1}`}
+              value={savings[index]}
+              onChange={(e) => handleChange(index, e.target.value)}
+              type="number"
+              error={savings[index] < 0}
+            />
+          </div>
+        ))}
+      </Box>
     </>
   );
 };

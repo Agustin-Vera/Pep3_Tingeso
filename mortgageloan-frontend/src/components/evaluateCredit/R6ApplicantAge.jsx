@@ -5,12 +5,12 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorIcon from "@mui/icons-material/Error";
 import SeverityAlert from "../common/alerts/SeverityAlert";
+import CustomDateSelect from "../common/inputs/CustomDateSelect";
 
 const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
   const [answerEvaluation, setAnswerEvaluation] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthYear, setBirhtYear] = useState("");
+
+  const [birthDate, setBirthDate] = useState(null);
 
   const [severityAlert, setSeverityAlert] = useState(false);
   const [severity, setSeverity] = useState("");
@@ -18,10 +18,8 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
 
   const evaluate = () => {
     console.log("Evaluando R6");
-    const birthDate = new Date(birthYear, birthMonth - 1, birthday);
-    const formattedBirthDate = birthDate.toISOString().split("T")[0];
     creditApplicationService
-      .evaluateR6(id, formattedBirthDate)
+      .evaluateR6(id, birthDate)
       .then((response) => {
         console.log("Respuesta: ", response);
         if (response.data.approved === true) {
@@ -42,31 +40,8 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
   return (
     <div>
       <h2>R6 - Edad del Solicitante</h2>
-      <div>
-        <label>Ingrese el día de nacimiento del cliente:</label>
-        <input
-          type="text"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Ingrese el mes de nacimiento del cliente</label>
-        <input
-          type="text"
-          value={birthMonth}
-          onChange={(e) => setBirthMonth(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Ingrese el año de nacimiento del cliente:</label>
-        <input
-          type="text"
-          value={birthYear}
-          onChange={(e) => setBirhtYear(e.target.value)}
-        />
-      </div>
-      <br />
+      <CustomDateSelect handleDateChange={setBirthDate} />
+      <br /> <br />
       <Button
         color="primary"
         variant="contained"

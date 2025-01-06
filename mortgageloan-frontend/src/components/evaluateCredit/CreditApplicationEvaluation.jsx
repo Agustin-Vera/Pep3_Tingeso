@@ -23,8 +23,8 @@ const CreditApplicationEvaluation = ({
   state,
   handleCreditApplicationState,
 }) => {
-  const [step, setStep] = useState(1); // Controlar el paso de las reglas
-  const [isApproved, setIsApproved] = useState(true); // Si la solicitud está aprobada
+  const [step, setStep] = useState(1);
+  const [isApproved, setIsApproved] = useState(true);
 
   // Estados para los datos de la solicitud
   const [rutUser, setRutUser] = useState("");
@@ -35,7 +35,7 @@ const CreditApplicationEvaluation = ({
   const nextStep = () => setStep((prev) => prev + 1);
 
   const handleFailure = (mensaje) => {
-    setIsApproved(false); // La solicitud es rechazada
+    setIsApproved(false);
     alert(mensaje);
     handleCreditApplicationState(7, mensaje);
   };

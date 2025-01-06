@@ -13,7 +13,7 @@ const CustomTextField = ({ label, value, onChange, type = "text", error }) => {
       onChange={onChange}
       sx={{
         m: 1,
-        width: "100%",
+        width: "80%",
         bgcolor: "#fff",
         p: 1.5,
         borderRadius: 2,
