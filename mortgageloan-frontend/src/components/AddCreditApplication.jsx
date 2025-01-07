@@ -12,33 +12,31 @@ import CustomTextField from "./common/inputs/CustomTextField";
 import CustomFileField from "./common/inputs/CustomFileField";
 import CustomSelect from "./common/inputs/CustomSelect";
 import SendIcon from "@mui/icons-material/Send";
+import CreditConditionsView from "./CreditConditionsView";
+import SeverityAlert from "./common/alerts/SeverityAlert";
 
 const AddCreditApplication = () => {
   const [rutUser, setRutUser] = useState("");
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [term, setTerm] = useState("");
+  const [loanTerm, setLoanTerm] = useState("");
 
-  // Documentos (todos los tipo de credito)
   const [identificationDoc, setIdentificationDoc] = useState("");
   const [appraisalCertificateDoc, setAppraisalCertificateDoc] = useState("");
   const [proofIncomeDoc, setProofIncomeDoc] = useState("");
-
-  // Documentos (tipo de credito 1 y 2)
   const [creditHistoryDoc, setCreditHistoryDoc] = useState("");
-
-  // Documentos (tipo de credito 2)
   const [firstHomeDeedDoc, setFirstHomeDeedDoc] = useState("");
-
-  // Documentos (tipo de credito 3)
   const [financialStatusBusinessDoc, setFinancialStatusBusinessDoc] =
     useState("");
   const [businessPlanDoc, setBusinessPlanDoc] = useState("");
-
-  // Documentos (tipo de credito 4)
   const [renovationBudgetDoc, setRenovationBudgetDoc] = useState("");
 
   const navigate = useNavigate();
+  const [severityAlert, setSeverityAlert] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [idGenerated, setIdGenerated] = useState("");
 
   const saveCreditApplication = (e) => {
     e.preventDefault();
@@ -54,6 +52,7 @@ const AddCreditApplication = () => {
       type &&
       amount &&
       term &&
+      term <= loanTerm &&
       appraisalCertificateDoc &&
       proofIncomeDoc
     ) {
@@ -92,14 +91,21 @@ const AddCreditApplication = () => {
             .create(formData)
             .then((response) => {
               console.log("Documento subido", response.data);
-              navigate(
+              setSeverityAlert(true);
+              setSeverity("success");
+              setAlertMessage("Solicitud de crédito creada con éxito");
+              /*navigate(
                 `/creditApplication/list/${rutUser}/${formData.get(
                   "idApplication"
                 )}`
-              );
+              );*/
+              setIdGenerated(formData.get("idApplication"));
             })
             .catch((error) => {
               console.log("Error al intentar subir los documentos", error);
+              setAlertMessage("Error al intentar subir los documentos");
+              setSeverity("error");
+              setSeverityAlert(true);
             });
         })
         .catch((error) => {
@@ -107,10 +113,18 @@ const AddCreditApplication = () => {
             "Error al intentar crear una solicitud crediticia",
             error
           );
-          alert(error.response.data);
+          setSeverity("error");
+          setSeverityAlert(true);
+          setAlertMessage(error.response.data);
         });
+    } else {
+      setSeverity("error");
+      setSeverityAlert(true);
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
+      console.log("Ingresar los campos faltantes");
     }
-    console.log("Ingresar los campos faltantes");
   };
   const creditOptions = [
     { value: 1, label: "Primera Vivienda" },
@@ -123,17 +137,20 @@ const AddCreditApplication = () => {
   return (
     <>
       <h1>Solicitud de Crédito</h1>
-      <Box sx={{ width: "90%" }}>
-        <CustomSelect
-          label="Seleccione el Tipo de Crédito"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          options={creditOptions}
-        />
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ width: "50%" }}>
+          <CustomSelect
+            label="Seleccione el Tipo de Crédito"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            options={creditOptions}
+          />
+        </Box>
+        <CreditConditionsView id={type} termChange={setLoanTerm} />
       </Box>
       <Box>
         <h2>Información Personal</h2>
-        <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ display: "flex", gap: 2 }}>
             <CustomTextField
               label="Ingrese su rut. Ej: 12345678-9"
@@ -171,7 +188,7 @@ const AddCreditApplication = () => {
               value={term}
               onChange={(e) => setTerm(e.target.value)}
               type="number"
-              error={term < 0}
+              error={term < 0 || term > loanTerm}
             />
             <CustomFileField
               id="archivo"
@@ -220,6 +237,25 @@ const AddCreditApplication = () => {
       >
         Enviar
       </Button>
+
+      {severity === "success" && (
+        <SeverityAlert
+          open={severityAlert}
+          onClose={() =>
+            navigate(`/creditApplication/list/${rutUser}/${idGenerated}`)
+          }
+          severity={severity}
+          message={alertMessage}
+        ></SeverityAlert>
+      )}
+      {severity === "error" && (
+        <SeverityAlert
+          open={severityAlert}
+          onClose={() => setSeverityAlert(false)}
+          severity={severity}
+          message={alertMessage}
+        ></SeverityAlert>
+      )}
     </>
   );
 };

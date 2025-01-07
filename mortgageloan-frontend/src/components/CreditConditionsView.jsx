@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
 import { Box, Typography } from "@mui/material";
 
-const CreditConditionsView = ({ id }) => {
+const CreditConditionsView = ({ id, termChange }) => {
   const [type, setType] = useState("");
   const [maxTerm, setMaxTerm] = useState("");
   const [interestRate, setInterestRate] = useState("");
@@ -18,6 +18,7 @@ const CreditConditionsView = ({ id }) => {
       setInterestRate(response.data.interestRate);
       setMaximumFinancing(response.data.maximumFinancingAmount * 100);
       setLoanName(response.data.loanType);
+      termChange(response.data.maximumTerm);
     });
   };
 

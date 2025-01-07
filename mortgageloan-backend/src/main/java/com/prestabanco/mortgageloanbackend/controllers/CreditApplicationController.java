@@ -28,7 +28,7 @@ public class CreditApplicationController {
         System.out.println("Aplicacion: " + creditApplication);
         CreditApplicationEntity newCreditApplication = creditApplicationService.saveCreditApplication(creditApplication);
         if(newCreditApplication == null) {
-            return ResponseEntity.badRequest().body("Error, no existe un usuario con ese rut para asociarlo a la solicitud");
+            return ResponseEntity.badRequest().body("Error, no existe un usuario registrado con el rut indicado");
         }
         return ResponseEntity.ok(newCreditApplication);
     }

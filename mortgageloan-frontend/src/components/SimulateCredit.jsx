@@ -14,6 +14,7 @@ const SimulateCredit = () => {
   const [amount, setAmount] = useState("");
   const [term, setTerm] = useState("");
   const [monthlyInstallment, setMonthlyInstallment] = useState("");
+  const [loanTerm, setLoanTerm] = useState("");
 
   const [severityAlert, setSeverityAlert] = useState(false);
   const [severity, setSeverity] = useState("");
@@ -22,7 +23,7 @@ const SimulateCredit = () => {
   const simulateCreditApplication = (e) => {
     e.preventDefault();
 
-    if (amount > 0 && term > 0 && type) {
+    if (amount > 0 && term > 0 && term <= loanTerm && type) {
       creditApplicationService
         .simulate(amount, term, type)
         .then((response) => {
@@ -43,7 +44,7 @@ const SimulateCredit = () => {
       setSeverity("error");
       setSeverityAlert(true);
       setAlertMessage(
-        "Error, ingrese valores válidos en los campos solicitados"
+        "Error, ingrese valores válidos o complete los campos solicitados"
       );
     }
   };
@@ -58,8 +59,15 @@ const SimulateCredit = () => {
   return (
     <>
       <h1>Simulación de Crédito</h1>
-      <p>Complete los campos a continuación</p>
-      <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
+      <p>Complete los campos a continuación sin agregar puntos ni comas</p>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
         <Box sx={{ p: 1, flex: 1 }}>
           <CustomSelect
             label="Seleccione el Tipo de Crédito"
@@ -67,7 +75,7 @@ const SimulateCredit = () => {
             onChange={(e) => setType(e.target.value)}
             options={creditOptions}
           />
-          <CreditConditionsView id={type} />
+          <CreditConditionsView id={type} termChange={setLoanTerm} />
         </Box>
         <Box
           component="form"
@@ -86,7 +94,7 @@ const SimulateCredit = () => {
             label="Plazo para pagar (años). Ej: 20"
             value={term}
             type="number"
-            error={term < 0}
+            error={term < 0 || term > loanTerm}
             onChange={(e) => setTerm(e.target.value)}
           />
         </Box>

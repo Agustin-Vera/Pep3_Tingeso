@@ -16,7 +16,7 @@ const CustomTextField = ({
       label={label}
       variant="filled"
       type={type}
-      helperText={error ? "Ingrese una entrada válida" : ""}
+      helperText={error ? "Ingrese una entrada correcta" : ""}
       onChange={onChange}
       sx={{
         m: 1,
