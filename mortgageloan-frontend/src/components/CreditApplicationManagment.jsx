@@ -6,7 +6,7 @@ import DocumentsList from "./document/DocumentsList";
 import statusService from "../services/statusService";
 import RuleIcon from "@mui/icons-material/Rule";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import CreditConditionsView from "./CreditConditionsView";
 
 const CreditApplicationManagment = () => {
@@ -27,17 +27,24 @@ const CreditApplicationManagment = () => {
   const [stateName, setStateName] = useState("");
   const [stateDescription2, setStateDescription2] = useState("");
 
-  const handleCreditApplicationState = (state, stateDescription) => {
-    console.log("Actualizando estado de la solicitud de crédito ...", state);
-    setState(state);
-    setStateDescription(stateDescription);
+  const handleCreditApplicationState = (newState, newStateDescription) => {
+    console.log(
+      "############################# Dentro de handleCreditApplicationState #############################"
+    );
+    //event.preventDefault();
+
+    console.log("Estado anterior: ", stateName);
+    console.log(
+      "Actualizando estado de la solicitud de crédito a ...",
+      newState
+    );
     const creditAplication = {
       id_application: id,
       rutUser: rutUser,
       type: type,
       amount: amount,
       term: term,
-      state: state,
+      state: newState,
       monthlyInstallment: monthlyInstallment,
       totalCost: totalCost,
       commission: commission,
@@ -45,17 +52,7 @@ const CreditApplicationManagment = () => {
       fireInsurance: fireInsurance,
       stateDescription: stateDescription,
     };
-    if (state === 4) {
-      // Si pasa las reglas de evaluación se calculan los costos totales (condiciones)
-      creditApplicationService
-        .calculateTotalCosts(id)
-        .then((response) => {
-          console.log("Costo total del crédito:", response.data);
-        })
-        .catch((error) => {
-          console.log("Error al calcular el costo total del crédito", error);
-        });
-    }
+    console.log("Esta solicitud tengo: ", creditAplication);
     console.log("Actualizando estado de la solicitud de crédito ...");
     creditApplicationService
       .update(creditAplication)
@@ -65,19 +62,31 @@ const CreditApplicationManagment = () => {
       .catch((error) => {
         console.log("Error al actualizar la solicitud de crédito", error);
       });
+    setState(newState);
+    setStateDescription(newStateDescription);
+    console.log(
+      "############################# Fuera de handleCreditApplicationState #############################"
+    );
   };
 
   useEffect(() => {
-    console.log("Identificador de la solicitud de crédito: ", id);
+    console.log(
+      "############################# Dentro de UseEffect #############################"
+    );
+    console.log("ID en UseEffect: ", id);
     creditApplicationService
       .get(id)
       .then((response) => {
-        console.log("Solicitud de crédito:", response.data);
+        console.log("Solicitud en UseEffect:", response.data);
         setRutUser(response.data.rutUser);
         setType(response.data.type);
         setAmount(response.data.amount);
         setTerm(response.data.term);
+
+        //setState(response.data.state);
+
         setState(response.data.state);
+
         setMonthlyInstallment(response.data.monthlyInstallment);
         setTotalCost(response.data.totalCost);
         setCommission(response.data.commission);
@@ -89,6 +98,7 @@ const CreditApplicationManagment = () => {
         console.log("Error al obtener la solicitud de crédito", error);
       });
     if (state) {
+      console.log("Estado a buscar en UseEffect: ", state);
       statusService
         .get(state)
         .then((response) => {
@@ -103,25 +113,35 @@ const CreditApplicationManagment = () => {
           );
         });
     }
-  }, [id, state]);
+    console.log(
+      "############################# Fuera de UseEffect #############################"
+    );
+  }, [state, stateName]);
 
   return (
     <Box>
-      <h1>Administración - Solicitud Crediticia</h1>
+      <h1>Solicitud Crediticia- Administración - {stateName}</h1>
       <Divider />
-      <h2>Estado: {stateName}</h2>
-      <h3>{stateDescription2}</h3>
       <Divider />
-      <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
-        <Box sx={{ p: 1, flex: 1 }}>
-          <p>ID de solicitud: {id}</p>
-          <p>Rut cliente: {rutUser}</p>
-          <p>Monto: ${amount} pesos</p>
-          <p>Plazo: {term} años</p>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{ display: "flex", flex: 1, gap: "4px", flexDirection: "column" }}
+        >
+          <Typography>ID de Solicitud: {id}</Typography>
+          <Typography>Rut del Cliente: {rutUser}</Typography>
+          <Typography>Monto Solicitado: ${amount} pesos</Typography>
+          <Typography>Plazo para Pagar: {term} años</Typography>
         </Box>
-        <Box sx={{ p: 1, flex: 1 }}>
-          <DocumentsList idApplication={id} loanType={type} />
-        </Box>
+
+        <DocumentsList idApplication={id} loanType={type} />
+
         <CreditConditionsView id={type} />
       </Box>
 

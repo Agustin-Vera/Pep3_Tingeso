@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const DocumentsList = ({ idApplication, loanType }) => {
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <h2>Documentos</h2>
       <Accordion
         sx={{
@@ -52,7 +52,7 @@ const DocumentsList = ({ idApplication, loanType }) => {
           </Box>
         </AccordionDetails>
       </Accordion>
-    </>
+    </Box>
   );
 };
 

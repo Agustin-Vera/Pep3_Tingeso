@@ -14,9 +14,11 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const CreditApplicationEvaluation = ({
   id,
@@ -119,13 +121,14 @@ const CreditApplicationEvaluation = ({
             <>
               <p>La solicitud paso todas las reglas de negocio ... </p>
               <br />
-              <button
-                onClick={() =>
-                  handleCreditApplicationState(state + 1, "Pre-Aprobada")
-                }
+              <Button
+                color="success"
+                variant="contained"
+                endIcon={<CheckCircleOutlineIcon />}
+                onClick={() => handleCreditApplicationState(4, "Pre-Aprobada")}
               >
                 Aprobar Evaluación
-              </button>
+              </Button>
             </>
           )}
         </>

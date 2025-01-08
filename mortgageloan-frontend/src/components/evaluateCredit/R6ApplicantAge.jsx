@@ -17,24 +17,32 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const evaluate = () => {
-    console.log("Evaluando R6");
-    creditApplicationService
-      .evaluateR6(id, birthDate)
-      .then((response) => {
-        console.log("Respuesta: ", response);
-        if (response.data.approved === true) {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("success");
-        } else {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("error");
-        }
-        setAlertMessage(response.data.message);
-        setSeverityAlert(true);
-      })
-      .catch((error) => {
-        console.log("Error al evaluar R6", error);
-      });
+    if (birthDate) {
+      console.log("Evaluando R6");
+      creditApplicationService
+        .evaluateR6(id, birthDate)
+        .then((response) => {
+          console.log("Respuesta: ", response);
+          if (response.data.approved === true) {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("success");
+          } else {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("error");
+          }
+          setAlertMessage(response.data.message);
+          setSeverityAlert(true);
+        })
+        .catch((error) => {
+          console.log("Error al evaluar R6", error);
+        });
+    } else {
+      setSeverity("error");
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
+      setSeverityAlert(true);
+    }
   };
 
   return (

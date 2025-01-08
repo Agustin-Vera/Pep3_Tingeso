@@ -53,6 +53,7 @@ const AddCreditApplication = () => {
       amount &&
       term &&
       term <= loanTerm &&
+      identificationDoc &&
       appraisalCertificateDoc &&
       proofIncomeDoc
     ) {
@@ -94,11 +95,6 @@ const AddCreditApplication = () => {
               setSeverityAlert(true);
               setSeverity("success");
               setAlertMessage("Solicitud de crédito creada con éxito");
-              /*navigate(
-                `/creditApplication/list/${rutUser}/${formData.get(
-                  "idApplication"
-                )}`
-              );*/
               setIdGenerated(formData.get("idApplication"));
             })
             .catch((error) => {
@@ -137,8 +133,8 @@ const AddCreditApplication = () => {
   return (
     <>
       <h1>Solicitud de Crédito</h1>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <Box sx={{ width: "50%" }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+        <Box sx={{ width: "50%", marginRight: 4 }}>
           <CustomSelect
             label="Seleccione el Tipo de Crédito"
             value={type}

@@ -47,8 +47,17 @@ public class CreditApplicationController {
 
     @PutMapping("/")
     public ResponseEntity<CreditApplicationEntity> updateCreditApplication(@RequestBody CreditApplicationEntity creditApplication) {
-        CreditApplicationEntity updatedCreditApplication = creditApplicationService.updateCreditApplication(creditApplication);
-        return ResponseEntity.ok(updatedCreditApplication);
+        System.out.println("Solicitud a actualizar \n" + creditApplication);
+        if(creditApplication.getState() == 4) {
+            CreditApplicationEntity updatedCreditApplicationn= bussinessLogicService.calculateTotalCostsCreditApplication(creditApplication.getId_application());
+            return ResponseEntity.ok(updatedCreditApplicationn);
+        }
+        else {
+            CreditApplicationEntity updatedCreditApplication = creditApplicationService.updateCreditApplication(creditApplication);
+
+            System.out.println("Solicitud actualizada \n" + updatedCreditApplication);
+            return ResponseEntity.ok(updatedCreditApplication);
+        }
     }
 
     @GetMapping("/simulate")

@@ -10,6 +10,7 @@ import SeverityAlert from "../common/alerts/SeverityAlert";
 
 const R1InstallmentIncome = (props) => {
   const [answerEvaluation, setAnswerEvaluation] = useState();
+  //const [answerStatus, setAnswerStatus] = useState();
   const [income, setIncome] = useState("");
 
   const [severityAlert, setSeverityAlert] = useState(false);
@@ -17,18 +18,26 @@ const R1InstallmentIncome = (props) => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const evaluate = () => {
-    creditApplicationService.evaluateR1(props.id, income).then((response) => {
-      console.log("Respuesta: ", response);
-      if (response.data.approved === true) {
-        setAnswerEvaluation(response.data.message);
-        setSeverity("success");
-      } else {
-        setAnswerEvaluation(response.data.message);
-        setSeverity("error");
-      }
-      setAlertMessage(response.data.message);
+    if (income && income > 0) {
+      creditApplicationService.evaluateR1(props.id, income).then((response) => {
+        console.log("Respuesta: ", response);
+        if (response.data.approved === true) {
+          setAnswerEvaluation(response.data.message);
+          setSeverity("success");
+        } else {
+          setAnswerEvaluation(response.data.message);
+          setSeverity("error");
+        }
+        setAlertMessage(response.data.message);
+        setSeverityAlert(true);
+      });
+    } else {
+      setSeverity("error");
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
       setSeverityAlert(true);
-    });
+    }
   };
 
   return (

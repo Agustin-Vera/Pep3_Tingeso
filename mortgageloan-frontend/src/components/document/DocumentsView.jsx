@@ -12,7 +12,6 @@ const DocumentsView = ({ idApplication, documentType }) => {
     documentService
       .getByIdAppDocType(idApplication, documentType)
       .then((response) => {
-        console.log("Documentos", response.data);
         const { name, data } = response.data;
         const url = `data:application/pdf;base64,${data}`;
         setDocumentUrl(url);

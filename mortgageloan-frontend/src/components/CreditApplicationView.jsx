@@ -4,7 +4,7 @@ import creditApplicationService from "../services/creditApplicationService";
 import mortgageLoanCondition from "../services/mortgageLoanCondition";
 import DocumentsList from "./document/DocumentsList";
 import statusService from "../services/statusService";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
@@ -111,12 +111,14 @@ const CreditApplicationView = () => {
       <Divider />
       <br />
       <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
-        <Box sx={{ p: 1, flex: 1 }}>
-          <p>Rut del Cliente: {userRut}</p>
-          <p>ID de Solicitud: {id}</p>
-          <p>Tipo de Solicitud: {loanType}</p>
-          <p>Monto Solicitado: ${amount} pesos</p>
-          <p>Plazo para Pagar: {term} años</p>
+        <Box
+          sx={{ display: "flex", flex: 1, gap: "4px", flexDirection: "column" }}
+        >
+          <Typography>Rut del Cliente: {userRut}</Typography>
+          <Typography>ID de Solicitud: {id}</Typography>
+          <Typography>Tipo de Solicitud: {loanType}</Typography>
+          <Typography>Monto Solicitado: ${amount} pesos</Typography>
+          <Typography>Plazo para Pagar: {term} años</Typography>
         </Box>
         {state <= 2 && (
           <Box sx={{ p: 1, flex: 1 }}>
@@ -124,17 +126,31 @@ const CreditApplicationView = () => {
           </Box>
         )}
         {state === 4 && (
-          <Box sx={{ flex: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px",
+            }}
+          >
             <h3>Terminos de la Solicitud Créditicia</h3>
-            <p>Tasa de Interés Anual: {interestRate}%</p>
-            <p>Cuota Mensual Sin Seguros: ${monthlyInstallment} pesos</p>
-            <p>Seguro de Desgravamen: ${creditLifeInsurance} pesos</p>
-            <p>Seguro de Incendio: ${fireInsurance} pesos</p>
-            <p>Los seguros se le suman a la cuota mensual ...</p>
-            <p>
+            <Typography>Tasa de Interés Anual: {interestRate}%</Typography>
+            <Typography>
+              Cuota Mensual Sin Seguros: ${monthlyInstallment} pesos
+            </Typography>
+            <Typography>
+              Seguro de Desgravamen: ${creditLifeInsurance} pesos
+            </Typography>
+            <Typography>Seguro de Incendio: ${fireInsurance} pesos</Typography>
+            <Typography>
+              Los seguros se le suman a la cuota mensual ...
+            </Typography>
+            <Typography>
               Comisiones por Administración (solo un pago): ${commission} pesos
-            </p>
-            <p>Costo Total Final del Crédito: ${totalCost} pesos</p>
+            </Typography>
+            <Typography>
+              Costo Total Final del Crédito: ${totalCost} pesos
+            </Typography>
           </Box>
         )}
       </Box>
@@ -176,7 +192,7 @@ const CreditApplicationView = () => {
       )}
       {state === 7 && (
         <>
-          <p>Explicación del Rechazo</p>
+          <p>{stateDescription}</p>
         </>
       )}
       {state === 8 && (

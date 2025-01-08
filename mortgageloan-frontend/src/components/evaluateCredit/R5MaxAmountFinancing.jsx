@@ -16,20 +16,28 @@ const R5MaxAmountFinancing = (props) => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const evaluate = () => {
-    creditApplicationService
-      .evaluateR5(props.id, propertyValue)
-      .then((response) => {
-        console.log("Respuesta: ", response);
-        if (response.data.approved === true) {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("success");
-        } else {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("error");
-        }
-        setAlertMessage(response.data.message);
-        setSeverityAlert(true);
-      });
+    if (propertyValue && propertyValue > 0) {
+      creditApplicationService
+        .evaluateR5(props.id, propertyValue)
+        .then((response) => {
+          console.log("Respuesta: ", response);
+          if (response.data.approved === true) {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("success");
+          } else {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("error");
+          }
+          setAlertMessage(response.data.message);
+          setSeverityAlert(true);
+        });
+    } else {
+      setSeverity("error");
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
+      setSeverityAlert(true);
+    }
   };
 
   return (

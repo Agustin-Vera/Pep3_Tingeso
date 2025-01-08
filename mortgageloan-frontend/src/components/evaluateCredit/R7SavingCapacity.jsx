@@ -21,6 +21,10 @@ const R7SavingCapacity = ({ nextStep, onFailure, id }) => {
   const [deposits, setDeposits] = useState(Array(12).fill("")); // depositos
   const [date, setDate] = useState(""); // fecha creacion cuenta ahorros
   console.log("Date en padre: ", date);
+  console.log("Savings en padre: ", savings);
+  console.log("Deposits en padre: ", deposits);
+  console.log("Balance en padre: ", balance);
+  console.log("Income en padre: ", income);
 
   const [severityAlert, setSeverityAlert] = useState(false);
   const [severity, setSeverity] = useState("");
@@ -29,31 +33,49 @@ const R7SavingCapacity = ({ nextStep, onFailure, id }) => {
   const [step, setStep] = useState(0);
 
   const evaluate = () => {
-    const savingsCapacity = {
-      income: parseFloat(income) || 0,
-      balance: parseFloat(balance) || 0,
-      savings: savings.map((saving) => parseFloat(saving) || 0),
-      deposits: deposits.map((deposit) => parseFloat(deposit) || 0),
-      date: date,
-    };
-    console.log("Identificador: ", id);
-    creditApplicationService
-      .evaluateR7(id, savingsCapacity)
-      .then((response) => {
-        console.log("Capacidad de Ahorro", response.data);
-        if (response.data.approved === true) {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("success");
-        } else {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("error");
-        }
-        setAlertMessage(response.data.message);
-        setSeverityAlert(true);
-      })
-      .catch((error) => {
-        console.log("Error al evaluar la Capacidad de Ahorro", error);
-      });
+    if (
+      income &&
+      balance &&
+      savings &&
+      deposits &&
+      date &&
+      income > 0 &&
+      balance > 0 &&
+      savings.every((saving) => saving !== "" && saving > 0) &&
+      deposits.every((deposit) => deposit !== "" && deposit > 0)
+    ) {
+      const savingsCapacity = {
+        income: parseFloat(income) || 0,
+        balance: parseFloat(balance) || 0,
+        savings: savings.map((saving) => parseFloat(saving) || 0),
+        deposits: deposits.map((deposit) => parseFloat(deposit) || 0),
+        date: date,
+      };
+      console.log("Identificador: ", id);
+      creditApplicationService
+        .evaluateR7(id, savingsCapacity)
+        .then((response) => {
+          console.log("Capacidad de Ahorro", response.data);
+          if (response.data.approved === true) {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("success");
+          } else {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("error");
+          }
+          setAlertMessage(response.data.message);
+          setSeverityAlert(true);
+        })
+        .catch((error) => {
+          console.log("Error al evaluar la Capacidad de Ahorro", error);
+        });
+    } else {
+      setSeverity("error");
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
+      setSeverityAlert(true);
+    }
   };
 
   const nextStepInternal = (step) => {

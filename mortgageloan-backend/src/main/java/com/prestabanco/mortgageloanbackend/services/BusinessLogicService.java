@@ -234,6 +234,7 @@ public class BusinessLogicService {
         creditApp.setCommission(commission);
         creditApp.setMonthlyInstallment(monthlyInstallment);
         creditApp.setFireInsurance(fireInsurance);
+        creditApp.setState(4);
         CreditApplicationEntity updatedApp = creditAppServ.updateCreditApplication(creditApp);
         return updatedApp;
     }

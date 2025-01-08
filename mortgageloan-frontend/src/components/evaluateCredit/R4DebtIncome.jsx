@@ -17,20 +17,28 @@ const R4DebtIncome = (props) => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const evaluate = () => {
-    creditApplicationService
-      .evaluateR4(props.id, income, debt)
-      .then((response) => {
-        console.log("Respuesta: ", response);
-        if (response.data.approved === true) {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("success");
-        } else {
-          setAnswerEvaluation(response.data.message);
-          setSeverity("error");
-        }
-        setAlertMessage(response.data.message);
-        setSeverityAlert(true);
-      });
+    if (income && income > 0 && debt && debt > 0) {
+      creditApplicationService
+        .evaluateR4(props.id, income, debt)
+        .then((response) => {
+          console.log("Respuesta: ", response);
+          if (response.data.approved === true) {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("success");
+          } else {
+            setAnswerEvaluation(response.data.message);
+            setSeverity("error");
+          }
+          setAlertMessage(response.data.message);
+          setSeverityAlert(true);
+        });
+    } else {
+      setSeverity("error");
+      setAlertMessage(
+        "Error, ingrese valores válidos o complete los campos solicitados"
+      );
+      setSeverityAlert(true);
+    }
   };
 
   return (

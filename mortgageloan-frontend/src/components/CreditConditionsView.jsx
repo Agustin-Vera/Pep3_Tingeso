@@ -18,7 +18,9 @@ const CreditConditionsView = ({ id, termChange }) => {
       setInterestRate(response.data.interestRate);
       setMaximumFinancing(response.data.maximumFinancingAmount * 100);
       setLoanName(response.data.loanType);
-      termChange(response.data.maximumTerm);
+      if (termChange) {
+        termChange(response.data.maximumTerm);
+      }
     });
   };
 
@@ -35,20 +37,23 @@ const CreditConditionsView = ({ id, termChange }) => {
           <Box
             sx={{
               bgcolor: "#fff", // Color de fondo
-              p: 1, // Padding interno
-              borderRadius: 2, // Bordes redondeados
-              boxShadow: 2, // Sombra para darle profundidad
-              maxWidth: "400px", // Ancho máximo
-              margin: "auto", // Centrar horizontalmente
+              display: "flex",
+              boxShadow: 2,
+              borderRadius: 2,
+              flex: 1,
+              gap: "4px",
+              flexDirection: "column",
+              width: "auto",
+              height: "fit-content",
             }}
           >
             <h3>Tipo de Crédito: {loanName}</h3>
-            <p>Tasa de Interés (anual): {interestRate}%</p>
-            <p>
+            <Typography>Tasa de Interés (anual): {interestRate}%</Typography>
+            <Typography>
               Monto Máximo Financiamiento: {maximumFinancing}% del valor de la
               propiedad
-            </p>
-            <p>Plazo Máximo: {maxTerm} años</p>
+            </Typography>
+            <Typography>Plazo Máximo: {maxTerm} años</Typography>
           </Box>
         </>
       )}

@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import HandymanIcon from "@mui/icons-material/Handyman";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 const CreditApplicationList = () => {
   const [creditApplcations, setCreditApplcation] = useState([]);
@@ -95,7 +97,7 @@ const CreditApplicationList = () => {
                     <Button
                       color="success"
                       variant="contained"
-                      endIcon={<SendIcon />}
+                      endIcon={<PreviewIcon />}
                       onClick={() =>
                         navigate(
                           `/creditApplication/list/${userRut}/${creditApplication.id_application}`
@@ -108,7 +110,7 @@ const CreditApplicationList = () => {
                     <Button
                       color="success"
                       variant="contained"
-                      endIcon={<SendIcon />}
+                      endIcon={<HandymanIcon />}
                       onClick={() =>
                         navigate(
                           `/creditApplication/managment/${creditApplication.id_application}`
