@@ -68,9 +68,6 @@ const CreditApplicationList = () => {
                 Estado
               </TableCell>
               <TableCell align="left" sx={{ fontWeight: "bold" }}>
-                Descripción
-              </TableCell>
-              <TableCell align="left" sx={{ fontWeight: "bold" }}>
                 Acciones
               </TableCell>
             </TableRow>
@@ -89,9 +86,6 @@ const CreditApplicationList = () => {
                 <TableCell align="left">{creditApplication.amount}</TableCell>
                 <TableCell align="left">{creditApplication.term}</TableCell>
                 <TableCell align="left">{creditApplication.state}</TableCell>
-                <TableCell align="left">
-                  {creditApplication.stateDescription}
-                </TableCell>
                 <TableCell>
                   {userRut ? (
                     <Button

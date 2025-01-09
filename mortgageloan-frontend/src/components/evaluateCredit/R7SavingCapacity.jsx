@@ -91,6 +91,10 @@ const R7SavingCapacity = ({ nextStep, onFailure, id }) => {
   return (
     <div>
       <h1>R7 - Capacidad de Ahorro</h1>
+      <p>
+        Ingrese los valores indicados, asegurese de no poner puntos ni comas en
+        las entradas númericas.
+      </p>
       <Box sx={{ maxWidth: 600, margin: "auto", flexDirection: "column" }}>
         {step === 0 && (
           <CustomTextField

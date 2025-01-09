@@ -44,6 +44,10 @@ const R4DebtIncome = (props) => {
   return (
     <div>
       <h2>R4 - Relación Deuda / Ingreso</h2>
+      <p>
+        Ingrese los valores indicados para evaluar la relación, asegurese de no
+        ingresar comas ni puntos en los campos númericos.
+      </p>
       <Box sx={{ maxWidth: 300, margin: "auto" }}>
         <CustomTextField
           label="Deudas totales del cliente. Ej: 500.000"

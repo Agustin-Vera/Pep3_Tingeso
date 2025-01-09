@@ -247,10 +247,6 @@ const CreditApplicationManagment = () => {
             La solicitud fue evaluada y, tras el análisis, no cumple con los
             requisitos establecidos por el banco
           </p>
-          <p>Rut cliente: {rutUser}</p>
-          <p>Tipo de solicitud: {type}</p>
-          <p>Monto: {amount}</p>
-          <p>Plazo: {term}</p>
         </>
       )}
       {state === 8 && (

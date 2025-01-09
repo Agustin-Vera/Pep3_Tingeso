@@ -47,6 +47,10 @@ const R1InstallmentIncome = (props) => {
         Monto a pedir: ${Number(props.amount).toLocaleString("es-CL")} pesos
       </p>
       <p>Plazo para pagar: {props.term} años</p>
+      <p>
+        Ingrese el ingreso mensual del cliente, sin puntos ni comas en los
+        campos númericos.
+      </p>
       <Box sx={{ maxWidth: 300, margin: "auto" }}>
         <CustomTextField
           label="Ingresos mensuales del cliente. Ej: 1.000.000"

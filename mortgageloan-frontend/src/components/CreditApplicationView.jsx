@@ -190,11 +190,7 @@ const CreditApplicationView = () => {
           </p>
         </>
       )}
-      {state === 7 && (
-        <>
-          <p>{stateDescription}</p>
-        </>
-      )}
+      {state === 7 && <></>}
       {state === 8 && (
         <>
           <p>Usted rechazó la solicitud ...</p>

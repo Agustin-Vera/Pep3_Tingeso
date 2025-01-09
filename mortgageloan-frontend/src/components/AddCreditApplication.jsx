@@ -114,10 +114,10 @@ const AddCreditApplication = () => {
           setAlertMessage(error.response.data);
         });
     } else {
-      setSeverity("error");
+      setSeverity("warning");
       setSeverityAlert(true);
       setAlertMessage(
-        "Error, ingrese valores válidos o complete los campos solicitados"
+        "Por favor, ingrese valores válidos o complete los campos solicitados"
       );
       console.log("Ingresar los campos faltantes");
     }
@@ -133,6 +133,10 @@ const AddCreditApplication = () => {
   return (
     <>
       <h1>Solicitud de Crédito</h1>
+      <p>
+        Ingrese los valores adecuados en los apartados indicados para solicitar
+        su préstamos hipotecario
+      </p>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
         <Box sx={{ width: "50%", marginRight: 4 }}>
           <CustomSelect
@@ -244,7 +248,7 @@ const AddCreditApplication = () => {
           message={alertMessage}
         ></SeverityAlert>
       )}
-      {severity === "error" && (
+      {(severity === "error" || severity === "warning") && (
         <SeverityAlert
           open={severityAlert}
           onClose={() => setSeverityAlert(false)}

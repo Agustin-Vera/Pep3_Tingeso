@@ -48,6 +48,10 @@ const R6ApplicantAge = ({ nextStep, onFailure, id }) => {
   return (
     <div>
       <h2>R6 - Edad del Solicitante</h2>
+      <p>
+        Seleccione la fecha de nacimiento del solicitante (Puede revisar los
+        documentos del cliente para encontrarla) ...
+      </p>
       <CustomDateSelect handleDateChange={setBirthDate} />
       <br /> <br />
       <Button

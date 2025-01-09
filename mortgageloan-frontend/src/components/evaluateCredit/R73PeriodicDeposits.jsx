@@ -12,8 +12,9 @@ const R73PeriodicDeposits = ({ deposits, setDeposits }) => {
     <>
       <h3>Respecto a Depósitos Periódicos</h3>
       <p>
-        Considere como mes 12 el mes anterior al actual y mes 1 el mes más
-        lejano al actual de los 12 meses
+        Ingrese los depositos del cliente en su cuenta de ahorros en los últimos
+        doce meses. (Considere como mes 12 el mes actual y mes 1 el mes más
+        lejano al actual de los 12 meses).
       </p>
       <Box
         sx={{

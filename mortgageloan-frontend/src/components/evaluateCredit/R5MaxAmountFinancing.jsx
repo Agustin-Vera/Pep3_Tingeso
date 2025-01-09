@@ -44,6 +44,14 @@ const R5MaxAmountFinancing = (props) => {
     <div>
       <h2>R5 - Monto Máximo de Financiamiento</h2>
       <p>Monto Solicitado: ${Number(props.amount).toLocaleString("es-CL")}</p>
+      <p>
+        Ingrese los valores indicados para la evaluación, asegurese de no
+        ingresar comas ni puntos en los campos númericos.
+      </p>
+      <p>
+        El valor de la propiedad puede puede ser encontrado en los documentos
+        del cliente ...
+      </p>
       <Box sx={{ maxWidth: 300, margin: "auto" }}>
         <CustomTextField
           label="Valor de la Propiedad. Ej: 80.000.000"
